@@ -6,9 +6,19 @@ name: pull_request_target
 
 on: pull_request_target
 
-permissions: read-all
+permissions:
+  pull-requests: write
+  contents: write
 
 jobs:
-  main:
-    uses: ahmadnassri/actions/.github/workflows/pull-request-target.yml@master
-    secrets: inherit
+  metadata:
+    runs-on: ubuntu-latest
+
+    outputs:
+      repository_is_template: ${{ steps.metadata.outputs.repository_is_template }}
+
+    steps:
+      - uses: actions/checkout@v3.2.0
+
+      - uses: ahmadnassri/action-metadata@v2.1.2
+        id: metadata
